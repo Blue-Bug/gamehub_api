@@ -1,0 +1,24 @@
+plugins {
+    id 'com.google.cloud.tools.jib' version '3.2.1'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+jib {
+    to {
+        image = "bluebugdev/gamehub_auth_api"
+        tags = ["latest","1.0.0"]
+    }
+    container {
+        jvmFlags = ["-Dspring.profiles.active=prod"]
+    }
+}
+
+dependencies {
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' exclude module: 'spring-boot-starter-logging'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
