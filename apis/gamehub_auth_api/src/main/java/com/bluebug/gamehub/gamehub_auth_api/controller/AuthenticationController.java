@@ -1,10 +1,10 @@
 package com.bluebug.gamehub.gamehub_auth_api.controller;
 
-import com.bluebug.gamehub.gamehub_auth_api.dto.ErrorDto;
-import com.bluebug.gamehub.gamehub_auth_api.dto.FieldErrorDto;
 import com.bluebug.gamehub.gamehub_auth_api.dto.LoginDto;
 import com.bluebug.gamehub.gamehub_auth_api.dto.SignUpDto;
 import com.bluebug.gamehub.gamehub_auth_api.service.AuthenticationService;
+import com.bluebug.gamehub.gamehub_core.dto.ErrorDto;
+import com.bluebug.gamehub.gamehub_core.dto.FieldErrorDto;
 import com.bluebug.gamehub.gamehub_core.jwt.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.bluebug.gamehub.gamehub_auth_api.dto;
+package com.bluebug.gamehub.gamehub_core.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,8 @@
 package com.bluebug.gamehub.gamehub_auth_api.service;
 
 import com.bluebug.gamehub.gamehub_auth_api.dto.*;
+import com.bluebug.gamehub.gamehub_core.dto.ErrorDto;
+import com.bluebug.gamehub.gamehub_core.dto.FieldErrorDto;
 import com.bluebug.gamehub.gamehub_core.jwt.GrantType;
 import com.bluebug.gamehub.gamehub_core.jwt.JwtExpirationTime;
 import com.bluebug.gamehub.gamehub_core.jwt.JwtProperties;
