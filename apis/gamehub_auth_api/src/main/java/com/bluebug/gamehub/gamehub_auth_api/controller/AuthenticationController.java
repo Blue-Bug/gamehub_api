@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +43,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginDto loginDto, Errors errors){
+    public ResponseEntity login(@RequestBody @Valid LoginDto loginDto, HttpServletResponse response, Errors errors){
         if(errors.hasErrors()){
             return ResponseEntity.badRequest().body(ErrorDto.builder()
                     .errors(errors.getFieldErrors()
@@ -48,7 +52,7 @@ public class AuthenticationController {
                             .collect(Collectors.toList())).build());
         }
 
-        return authenticationService.login(loginDto);
+        return authenticationService.login(loginDto,response);
     }
 
     @PostMapping("/logout")
@@ -64,10 +68,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity reissue(@RequestHeader Map<String,String> header){
+    public ResponseEntity reissue(@RequestHeader Map<String,String> header, HttpServletRequest request, HttpServletResponse response){
         String accessToken = header.get(jwtProperties.getACCESS_TOKEN_HEADER());
-        String refreshToken = header.get(jwtProperties.getREFRESH_TOKEN_HEADER());
-
-        return authenticationService.reissue(accessToken,refreshToken);
+        String refreshToken = "";
+        Cookie cookie = WebUtils.getCookie(request, jwtProperties.getREFRESH_TOKEN_HEADER());
+        if(cookie != null){
+            refreshToken = cookie.getValue();
+        }
+        return authenticationService.reissue(accessToken,refreshToken,response);
     }
 }

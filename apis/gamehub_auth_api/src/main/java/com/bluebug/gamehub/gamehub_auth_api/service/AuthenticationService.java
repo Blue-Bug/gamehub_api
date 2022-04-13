@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +66,7 @@ public class AuthenticationService {
                         .updated_at(newMember.getUpdated_at()).build());
     }
 
-    public ResponseEntity login(LoginDto loginDto) {
+    public ResponseEntity login(LoginDto loginDto, HttpServletResponse response) {
         Optional<Member> result = memberRepository.findByEmail(loginDto.getUsername());
         if(result.isEmpty()){
             result = memberRepository.findByNickname(loginDto.getUsername());
@@ -85,11 +87,24 @@ public class AuthenticationService {
         String accessToken = jwtTokenProvider.generateAccessToken(username);
         RefreshToken refreshToken = saveAndReturnRefreshToken(username);
 
+        addRefreshTokenToCookie(response, refreshToken);
+
         return ResponseEntity.ok().body(TokenDto.builder()
                 .grantType(GrantType.BEARER)
                 .accessToken(accessToken)
-                .refreshToken(refreshToken.getRefreshToken())
                 .build());
+    }
+
+    private void addRefreshTokenToCookie(HttpServletResponse response, RefreshToken refreshToken) {
+        Cookie cookie = new Cookie(jwtProperties.getREFRESH_TOKEN_HEADER(), refreshToken.getRefreshToken());
+
+        cookie.setMaxAge(refreshToken.getExpirationTime().intValue());
+
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
     }
 
     private RefreshToken saveAndReturnRefreshToken(String username) {
@@ -122,7 +137,7 @@ public class AuthenticationService {
                 .build());
     }
 
-    public ResponseEntity reissue(String accessToken, String refreshToken) {
+    public ResponseEntity reissue(String accessToken, String refreshToken, HttpServletResponse response) {
         accessToken = jwtTokenProvider.resolveToken(accessToken);
         refreshToken = jwtTokenProvider.resolveToken(refreshToken);
 
@@ -137,14 +152,13 @@ public class AuthenticationService {
             return ResponseEntity.ok().body(TokenDto.builder()
                     .grantType(GrantType.BEARER)
                     .accessToken(accessToken)
-                    .refreshToken(refreshToken)
                     .build());
         }
         else if(isAccessTokenValid){
+            addRefreshTokenToCookie(response,saveAndReturnRefreshToken(jwtTokenProvider.getUsername(accessToken)));
             return ResponseEntity.ok().body(TokenDto.builder()
                     .grantType(GrantType.BEARER)
-                    .refreshToken(saveAndReturnRefreshToken(jwtTokenProvider.getUsername(accessToken))
-                            .getRefreshToken())
+                    .accessToken(accessToken)
                     .build());
         }
         else if(isRefreshTokenValid){
@@ -157,7 +171,7 @@ public class AuthenticationService {
 
             if(jwtTokenProvider.getRemainMilliSeconds(refreshToken) < JwtExpirationTime.REISSUE_TOKEN_EXPIRATION_TIME){
                 refreshTokenRedisRepository.deleteById(username);
-                tokenDto.setRefreshToken(saveAndReturnRefreshToken(username).getRefreshToken());
+                addRefreshTokenToCookie(response,saveAndReturnRefreshToken(username));
             }
 
             return ResponseEntity.ok().body(tokenDto);
