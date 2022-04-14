@@ -11,7 +11,7 @@ configurations {
 jib {
     to {
         image = "bluebugdev/gamehub_auth_api"
-        tags = ["latest","1.0.3"]
+        tags = ["latest","1.0.4"]
     }
     container {
         jvmFlags = ["-Dspring.profiles.active=prod"]
