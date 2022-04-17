@@ -139,7 +139,6 @@ public class AuthenticationService {
 
     public ResponseEntity reissue(String accessToken, String refreshToken, HttpServletResponse response) {
         accessToken = jwtTokenProvider.resolveToken(accessToken);
-        refreshToken = jwtTokenProvider.resolveToken(refreshToken);
 
         boolean isAccessTokenValid = jwtTokenProvider.validateToken(accessToken);
         boolean isRefreshTokenValid = false;

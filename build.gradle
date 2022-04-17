@@ -74,6 +74,14 @@ project(':domains:token_domain'){
     }
 }
 
+project(':domains:post_domain'){
+    bootJar { enabled = false }
+    jar { enabled = true }
+
+    dependencies {
+    }
+}
+
 project(':gamehub_core'){
     bootJar { enabled = false }
     jar { enabled = true }
@@ -88,5 +96,12 @@ project(':gamehub_core'){
 project('apis:gamehub_auth_api'){
     dependencies {
         implementation project(':gamehub_core')
+    }
+}
+
+project('apis:gamehub_s3_api'){
+    dependencies {
+        implementation project(':gamehub_core')
+        implementation project(':domains:post_domain')
     }
 }
