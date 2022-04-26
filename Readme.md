@@ -11,6 +11,7 @@
 ### gamehub_s3_api
 #### S3 API 를 사용하여 Post 도메인과 버킷에 미디어를 저장하는 실행가능한 api 모듈
 - v1.0.0 업로드/삭제
+- v1.0.1 UpdateDto Tags validate 수정
 
 ## Domains 
 ### token_domain

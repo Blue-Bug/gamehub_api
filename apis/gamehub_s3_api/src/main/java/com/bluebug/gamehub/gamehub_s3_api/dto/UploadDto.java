@@ -13,5 +13,5 @@ public class UploadDto {
     String description;
 
     @Size(max=5)
-    Set<String> tags;
+    Set<@Length(min=1,max=50)String> tags;
 }
