@@ -7,6 +7,7 @@
 - v1.0.2 cors 설정
 - v1.0.3 RefreshToken Secure HttpOnly Cookie 설정
 - v1.0.4 cors 재설정
+- v1.0.5 가입 시 email null,blank validation 추가 
 
 ### gamehub_s3_api
 #### S3 API 를 사용하여 Post 도메인과 버킷에 미디어를 저장하는 실행가능한 api 모듈

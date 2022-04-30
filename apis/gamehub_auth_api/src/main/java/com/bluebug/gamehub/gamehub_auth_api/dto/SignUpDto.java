@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class SignUpDto {
     @Email
+    @NotBlank
     private String email;
 
     @NotBlank
