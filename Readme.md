@@ -13,6 +13,7 @@
 #### S3 API 를 사용하여 Post 도메인과 버킷에 미디어를 저장하는 실행가능한 api 모듈
 - v1.0.0 업로드/삭제
 - v1.0.1 UpdateDto Tags validate 수정
+- v1.0.2 thumbnail 추가로 인한 업로드 제한 개수 변경 5->6, 허용 파일 형식 수정
 
 ## Domains 
 ### token_domain

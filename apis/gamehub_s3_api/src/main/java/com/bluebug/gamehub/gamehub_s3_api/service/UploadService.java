@@ -39,7 +39,7 @@ public class UploadService {
     private final AmazonS3 amazonS3;
 
     public ResponseEntity uploadPost(String nickname, UploadDto uploadDto, List<MultipartFile> multipartFiles) {
-        if(multipartFiles.size() > 5){
+        if(multipartFiles.size() > 6){
             return ResponseEntity.badRequest().body(ErrorDto.builder()
                             .errors(List.of(new FieldErrorDto("files","파일 갯수가 5개 초과입니다.")))
                             .build());
