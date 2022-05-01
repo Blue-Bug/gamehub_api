@@ -105,3 +105,10 @@ project('apis:gamehub_s3_api'){
         implementation project(':domains:post_domain')
     }
 }
+
+project('apis:gamehub_post_api'){
+    dependencies {
+        implementation project(':gamehub_core')
+        implementation project(':domains:post_domain')
+    }
+}
