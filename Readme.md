@@ -15,6 +15,10 @@
 - v1.0.1 UpdateDto Tags validate 수정
 - v1.0.2 thumbnail 추가로 인한 업로드 제한 개수 변경 5->6, 허용 파일 형식 수정
 
+### gamehub_post_api
+#### Post 도메인을 사용하여 서비스를 제공하는 실행가능한 api 모듈
+- v1.0.0 Post 읽기, 수정, 유저 Feed, 최근 업로드 보기
+
 ## Domains 
 ### token_domain
 #### token 도메인 모듈
