@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -16,55 +17,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class UserMember implements UserDetails {
-    private String username;
+public class UserMember extends User {
+    private Member member;
 
-    private String nickname;
-
-    private String password;
-
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
-
-    public static UserMember createUserMember(Member member){
-        return UserMember.builder()
-                .username(member.getEmail())
-                .nickname(member.getNickname())
-                .roles(member.getRoles()
-                        .stream().collect(Collectors.toList()))
-                .build();
-    }
-
-    @Override
-    @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isEnabled() {
-        return false;
+    public UserMember(Member member) {
+        super(member.getNickname(), member.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        this.member = member;
     }
 }

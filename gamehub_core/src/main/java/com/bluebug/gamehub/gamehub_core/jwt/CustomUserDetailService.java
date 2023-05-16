@@ -27,6 +27,6 @@ public class CustomUserDetailService implements UserDetailsService {
             if(result.isEmpty()) throw new UsernameNotFoundException("해당 정보로 가입한 멤버가 없습니다.");
         }
 
-        return UserMember.createUserMember(result.get());
+        return new UserMember(result.get());
     }
 }
